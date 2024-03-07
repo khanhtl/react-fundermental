@@ -4,8 +4,11 @@ import { useParams } from "react-router-dom";
 import Carousel from "./Carousel";
 import ErrorBoundary from "./ErrorBoundary";
 import fetchPet from "./fetchPet";
+import { useState } from "react";
+import Modal from "./Modal";
 
 function Details() {
+  const [showModal, setShowModal] = useState(false);
   const { id } = useParams();
   const results = useQuery(["details", id], fetchPet);
   if (results.isLoading) {
@@ -28,8 +31,17 @@ function Details() {
         <h1>{name}</h1>
         <h2>
           {animal} - {breed} - {city},{state}
-          <button>Adopt {name}</button>
+          <button onClick={() => setShowModal(true)}>Adopt {name}</button>
           <p>{description}</p>
+          {showModal && (
+            <Modal>
+              <h1>Would you like to adopt {name}</h1>
+              <div className="buttons">
+                <button>Yes</button>
+                <button onClick={() => setShowModal(false)}>No</button>
+              </div>
+            </Modal>
+          )}
         </h2>
       </div>
     </div>
