@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { useParams } from "react-router-dom";
-import fetchPet from "./fetchPet";
 import Carousel from "./Carousel";
+import ErrorBoundary from "./ErrorBoundary";
+import fetchPet from "./fetchPet";
 
 function Details() {
   const { id } = useParams();
@@ -14,6 +15,9 @@ function Details() {
       </div>
     );
   }
+  // useEffect(() => {
+  //   throw new Error();
+  // }, []);
 
   const { name, animal, city, state, breed, images, description } =
     results.data.pets[0];
@@ -32,4 +36,12 @@ function Details() {
   );
 }
 
-export default Details;
+function DetailsErrorBoundary(props) {
+  return (
+    <ErrorBoundary>
+      <Details {...props} />
+    </ErrorBoundary>
+  );
+}
+
+export default DetailsErrorBoundary;
